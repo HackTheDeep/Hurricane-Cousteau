@@ -3,12 +3,9 @@ const MenuState = {
     preload: function() {
         //environment
         this.selected = 0
-        this.selectArray = ['PLAY', 'HIGH SCORES', 'HOW TO PLAY']
-        this.load.image('star_background', 'assets/star_background.png')
+        this.selectArray = ['RUN', 'ABOUT']
         this.canMove = false
         this.moveCounter = 0
-	    this.isGlowing = false
-	    this.glowCounter = 0
 	    this.shadowX = 430
         this.shadowY = 400
         this.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js')
@@ -27,12 +24,11 @@ const MenuState = {
         //Load Background and Title
         this.background = this.add.tileSprite(0, 0,  this.game.world.width, this.game.world.height, 'star_background')
 
-        game.add.text(254, 50, 'SUPER ASTEROID', {font: '72pt Megrim', fill: 'white'})
-        game.add.text(414, 126, 'BATTLE', {font: '84pt Megrim', fill: '#cc00cc'})
+        game.add.text(254, 50, 'Hurricane', {font: '72pt Arial', fill: 'black'})
+        game.add.text(414, 126, 'Simulator', {font: '84pt Arial', fill: 'black'})
         game.add.text(430, 400, this.selectArray[this.selected], {font: '42pt Megrim', fill: '#5C804B'})
         shadow = game.add.text(this.shadowX, this.shadowY, 'PLAY', {font: '42pt Megrim', fill: '#66FB21'})
-        game.add.text(430, 475, 'HIGH SCORES', {font: '42pt Megrim', fill: '#5C804B'})
-        game.add.text(430, 550, 'HOW TO PLAY', {font: '42pt Megrim', fill: '#5C804B'})
+        game.add.text(430, 475, 'ABOUT', {font: '42pt Megrim', fill: '#5C804B'})
 
         if (!playerName){
             playerName = defaultPlayerName

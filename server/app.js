@@ -33,14 +33,11 @@ app.get('*', function (req, res, next) {
   res.sendFile(resolve(__dirname, '..', 'public', 'index.html'));
 });
 
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 1910;
 const server = app.listen(port, function () {
   console.log('Server is listening...');
   console.log('http://localhost:1910/');
 });
-
-const io = require('socket.io')(server);
-require('./socket-server')(io);
 
 //500 error middlewear
 app.use(function (err, req, res, next) {
