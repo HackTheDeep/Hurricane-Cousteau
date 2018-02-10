@@ -6,7 +6,7 @@ const MenuState = {
         this.selectArray = ['RUN', 'ABOUT']
         this.canMove = false
         this.moveCounter = 0
-	    this.shadowX = 430
+	    this.shadowX = 300
         this.shadowY = 400
     },
 
@@ -15,11 +15,11 @@ const MenuState = {
         //Load Background and Title
         this.background = this.add.tileSprite(0, 0,  this.game.world.width, this.game.world.height, 'water_texture')
 
-        game.add.text(254, 50, 'Hurricane', {font: '72pt Arial', fill: 'black'})
-        game.add.text(414, 126, 'Simulator', {font: '84pt Arial', fill: 'black'})
-        game.add.text(430, 400, this.selectArray[this.selected], {font: '42pt Megrim', fill: '#5C804B'})
-        shadow = game.add.text(this.shadowX, this.shadowY, 'PLAY', {font: '42pt Megrim', fill: '#66FB21'})
-        game.add.text(430, 475, 'ABOUT', {font: '42pt Megrim', fill: '#5C804B'})
+        game.add.text(200, 50, 'Hurricane', {font: '72pt Arial', fill: 'black'})
+        game.add.text(200, 126, 'Simulator', {font: '72pt Arial', fill: 'black'})
+        game.add.text(300, 400, this.selectArray[this.selected], {font: '42pt Arial', fill: 'black'})
+        shadow = game.add.text(this.shadowX, this.shadowY, 'RUN', {font: '42pt Arial', fill: 'yellow'})
+        game.add.text(300, 475, 'ABOUT', {font: '42pt Arial', fill: 'black'})
 
         //  Our controls.
         this.cursors = this.game.input.keyboard.createCursorKeys()
@@ -29,28 +29,25 @@ const MenuState = {
         this.aKey = this.game.input.keyboard.addKey(Phaser.Keyboard.A)
         this.sKey = this.game.input.keyboard.addKey(Phaser.Keyboard.S)
         this.dKey = this.game.input.keyboard.addKey(Phaser.Keyboard.D)
-
-        //xbox 360 controller setup
-        game.input.gamepad.start()
-        pad1 = game.input.gamepad.pad1
     },
+
     update: function(){
         //Select Mode
-        if (this.wKey.isDown || this.cursors.up.isDown /*|| pad1.isDown(Phaser.Gamepad.XBOX360_DPAD_UP) */|| pad1.axis(Phaser.Gamepad.XBOX360_STICK_LEFT_Y) < -0.1){
-            if (this.canMove && this.selectArray[this.selected] !== 'PLAY'){
+        if (this.wKey.isDown || this.cursors.up.isDown){
+            if (this.canMove && this.selectArray[this.selected] !== 'RUN'){
                 this.selected--
                 shadow.destroy()
                 this.shadowY -= 75
-                shadow = game.add.text(this.shadowX, this.shadowY, this.selectArray[this.selected], {font: '42pt Megrim', fill: '#66FB21'})
+                shadow = game.add.text(this.shadowX, this.shadowY, this.selectArray[this.selected], {font: '42pt Arial', fill: 'yellow'})
                 this.canMove = false
             }
         }
-        if (this.sKey.isDown || this.cursors.down.isDown /*|| pad1.isDown(Phaser.Gamepad.XBOX360_DPAD_DOWN) */|| pad1.axis(Phaser.Gamepad.XBOX360_STICK_LEFT_Y) > 0.1){
-            if (this.canMove && this.selectArray[this.selected] !== 'HOW TO PLAY'){
+        if (this.sKey.isDown || this.cursors.down.isDown){
+            if (this.canMove && this.selectArray[this.selected] !== 'ABOUT'){
                 this.selected++
                 shadow.destroy()
                 this.shadowY += 75
-                shadow = game.add.text(this.shadowX, this.shadowY, this.selectArray[this.selected], {font: '42pt Megrim', fill: '#66FB21'})
+                shadow = game.add.text(this.shadowX, this.shadowY, this.selectArray[this.selected], {font: '42pt Arial', fill: 'yellow'})
                 this.canMove = false
             }
         }
@@ -65,15 +62,12 @@ const MenuState = {
         }
 
         //Start mode
-        if (this.canMove && (this.spaceBar.isDown || this.enter.isDown || pad1.isDown(Phaser.Gamepad.XBOX360_A))){
+        if (this.canMove && (this.spaceBar.isDown || this.enter.isDown )){
             let selection = this.selectArray[this.selected]
-            if (selection === 'PLAY'){
-                this.state.start('JoinGameState')
-            } else if (selection === 'HIGH SCORES'){
-                // game.add.text(465, 530, 'CANNOT SEE HIGH SCORES YET', {font: '14pt Megrim', fill: '#5C804B'})
-                this.state.start('HighScore')
-            } else if (selection === 'HOW TO PLAY'){
-                this.state.start('HowToPlayState')
+            if (selection === 'RUN'){
+                this.state.start('SetConditionsState')
+            } else if (selection === 'ABOUT'){
+                this.state.start('AboutState')
             }
         }
     }
