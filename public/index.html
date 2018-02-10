@@ -1,14 +1,25 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta name='viewport' content='width=device-width initial-scale=1.0'>
-    <title>Boilermaker</title>
-    <link rel="stylesheet" href="/style.css" />
-    <script defer src="/bundle.js"></script>
-  </head>
-  <body>
-    <div id="app"></div>
-  </body>
+    <head>
+    	<link rel = "stylesheet" type = "text/css" href = "/style.css" />
+        <link href="https://fonts.googleapis.com/css?family=VT323|Megrim|Press+Start+2P" rel="stylesheet">
+      <title>Super Asteroid Battle</title>
+    </head>
+    <body>
+      <div id="main">
+        <script type="text/javascript" src="phaser.min.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="/@orange-games/phaser-input/build/phaser-input.js"></script>
+        <script type="text/javascript" src="./js/states/GameState.js"></script>
+        <script type="text/javascript" src="./js/states/PreloadState.js"></script>
+        <script type="text/javascript" src="./js/states/BootState.js"></script>
+        <script type="text/javascript" src="./js/states/MenuState.js"></script>
+        <script type="text/javascript" src="./js/states/HighScore.js"></script>
+        <script type="text/javascript" src="./js/states/JoinGameState.js"></script>
+        <script type="text/javascript" src="./js/states/HowToPlayState.js"></script>
+        <script type="text/javascript" src="./js/states/XBOXControlState.js"></script>
+        <script type="text/javascript" src="./js/main.js"></script>
+        <script type="text/javascript" src="./js/socket.js"></script>
+      </div>
+    </body>
 </html>
-
