@@ -5,7 +5,7 @@ const app = express();
 const db = require('./db');
 
 db.sync({force: false}).then(() => {
-	//console.log('Database is synced')
+	console.log('Database is synced')
 });
 
 // if (process.env.NODE_ENV !== 'production') require('../secrets')
@@ -35,8 +35,8 @@ app.get('*', function (req, res, next) {
 
 const port = process.env.PORT || 3001;
 const server = app.listen(port, function () {
-  // console.log('Server is listening...');
-  // console.log('http://localhost:3001/');
+  console.log('Server is listening...');
+  console.log('http://localhost:1910/');
 });
 
 const io = require('socket.io')(server);
