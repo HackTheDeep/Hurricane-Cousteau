@@ -8,31 +8,18 @@ const MenuState = {
         this.moveCounter = 0
 	    this.shadowX = 430
         this.shadowY = 400
-        this.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js')
-
     },
-
-    WebFontConfig: {
-	    active: function() { game.time.events.add(Phaser.Timer.SECOND, createText, this); },
-	    google: {
-	      families: ['Megrim', 'Press Start 2P']
-	    }
-	},
 
     create: function() {
 
         //Load Background and Title
-        this.background = this.add.tileSprite(0, 0,  this.game.world.width, this.game.world.height, 'star_background')
+        this.background = this.add.tileSprite(0, 0,  this.game.world.width, this.game.world.height, 'water_texture')
 
         game.add.text(254, 50, 'Hurricane', {font: '72pt Arial', fill: 'black'})
         game.add.text(414, 126, 'Simulator', {font: '84pt Arial', fill: 'black'})
         game.add.text(430, 400, this.selectArray[this.selected], {font: '42pt Megrim', fill: '#5C804B'})
         shadow = game.add.text(this.shadowX, this.shadowY, 'PLAY', {font: '42pt Megrim', fill: '#66FB21'})
         game.add.text(430, 475, 'ABOUT', {font: '42pt Megrim', fill: '#5C804B'})
-
-        if (!playerName){
-            playerName = defaultPlayerName
-        }
 
         //  Our controls.
         this.cursors = this.game.input.keyboard.createCursorKeys()
@@ -89,24 +76,5 @@ const MenuState = {
                 this.state.start('HowToPlayState')
             }
         }
-
-        //Glowing
-		if (!this.isGlowing){
-			temp = Math.random()
-			if (temp < 0.04){
-				this.isGlowing = true
-				glow = game.add.text(414, 126, 'BATTLE', {font: '84pt Megrim', fill: '#ff33ff'})
-			}
-		}
-
-		if (this.isGlowing){
-			this.glowCounter++
-	    }
-
-	    if (this.glowCounter > 7){
-			this.isGlowing = false
-			this.glowCounter = 0
-			glow.destroy()
-	    }
     }
 }

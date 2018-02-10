@@ -1,6 +1,5 @@
 var BootState = {
 
-
   preload: function(){
     this.load.image('water_texture', 'assets/water_texture.jpg')
   },
