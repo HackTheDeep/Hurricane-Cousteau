@@ -1,4 +1,6 @@
 const Sequelize = require('sequelize');
+const _ = require('lodash');
+
 const db = new Sequelize(
   process.env.DATABASE_URL ||
   'postgres://localhost:5432/Cousteau', {
