@@ -3,5 +3,24 @@ canvas {
 }
 
 body {
-	background-color: gray;
+	background-color: #338BC0;
 }
+
+p {
+	text-align: center;
+	font: verdana;
+	color: white;
+}
+
+a {
+	font-family: 'Raleway', sans-serif;
+	color: white;
+}
+
+footer {
+	position:absolute;
+	left:0px;
+	bottom:0px;
+	height:70px;
+	width:100%;
+ }
