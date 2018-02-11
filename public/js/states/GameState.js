@@ -7,7 +7,7 @@ const GameState = {
     preload: function() {
         this.globalTimer = 1
         this.frameCount = 0
-        this.frameLength = 3
+        this.frameLength = 4
         this.distanceMultiplier = 23
         this.endtext = null
         console.log(drifterData)
@@ -28,14 +28,20 @@ const GameState = {
         drifters = game.add.group()
         drifters.enableBody = true
 
-        drifters.createMultiple(100, 'vDrifter');
         drifters.setAll('anchor.x', 0.5)
         drifters.setAll('anchor.y', 0.5)
+        drifters.setAll('dataId', null)
+
+        realDrifters = game.add.group()
+        realDrifters.enableBody = true
+
+        realDrifters.setAll('anchor.x', 0.5)
+        realDrifters.setAll('anchor.y', 0.5)
+        realDrifters.setAll('dataId', null)
 
        let tempDrifter
-
+       let tempRealDrifter
         for (let key in drifterData){
-            console.log(key)
             let tempId = drifterData[key]
             let startDay = 16
             let startTime = 15
@@ -50,14 +56,16 @@ const GameState = {
                         startDay++
                     }
                 }
-                console.log(key, tempId[startDay][startTime])
-                console.log(real)
                 let coords = tempId[startDay][startTime]
-                let phaserCoords = {x: (812.2 - coords.x), y}
-                // tempDrifter = drifters.create(coords.x, coords.y, 'vDrifter')
-                // tempDrifter.scale.setTo(0.02, 0.02)
+                let phaserCoords = {x: (800 - (storm_stats[1][4] * this.distanceMultiplier) - ((360 - coords.long) * this.distanceMultiplier)), y: (600 + (storm_stats[1][3] * this.distanceMultiplier) - (coords.lat * this.distanceMultiplier))}
+                tempDrifter = drifters.create(phaserCoords.x, phaserCoords.y, 'vDrifter')
+                tempDrifter.scale.setTo(0.022, 0.022)
+                tempDrifter.dataId = key
+                tempRealDrifter = realDrifters.create(phaserCoords.x, phaserCoords.y, 'rDrifter')
+                tempRealDrifter.scale.setTo(0.018, 0.018)
+                tempRealDrifter.dataId = key
             } else {
-                console.log(key, 'no start data')
+                //console.log(key, 'no start data')
             }
         }
 
@@ -67,6 +75,7 @@ const GameState = {
         this.spaceBar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR)
         this.enter = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER)
         this.backspace = this.game.input.keyboard.addKey(Phaser.Keyboard.BACKSPACE)
+
     },
 
     update: function(){
@@ -77,7 +86,7 @@ const GameState = {
         if (currentStormStats){
             this.frameCount++
             if (this.frameCount >= this.frameLength){
-                drifters.children.forEach(drifter => {
+                drifters.children.forEach((drifter, idx) => {
                     let distance = game.physics.arcade.distanceBetween(hurricane, drifter)
                     if (distance < maxEffectDist){
                         let angle = game.math.angleBetweenPoints(hurricane.position, drifter.position)
@@ -90,6 +99,35 @@ const GameState = {
                        drifter.body.velocity.y *= waterResistance
                     }
                 })
+
+                let currentDay = currentStormStats[0]
+                let currentHour = currentStormStats[2]
+
+                //Code to move drifters based on data(unfinished)
+
+                // realDrifters.children.forEach((rDrifter, idx) => {
+                //     let dataset = drifterData[rDrifter.dataId]
+                //     while (!dataset[currentDay] && currentDay < 32){
+                //         currentDay++
+                //     }
+                //     if (currentDay !== 32){
+                //         while (!dataset[currentDay][currentHour]){
+                //             currentHour++
+                //             if (currentHour >= 24){
+                //                 currentHour = 0
+                //                 currentDay++
+                //             }
+                //         }
+                //         let newCoords = dataset[currentDay][currentHour]
+                //         console.log(newCoords)
+                //         // let phaserCoords = {x: (800 - (storm_stats[1][4] * this.distanceMultiplier) - ((360 - coords.long) * this.distanceMultiplier)), y: (600 + (storm_stats[1][3] * this.distanceMultiplier) - (coords.lat * this.distanceMultiplier))}
+                //         // tempDrifter = drifters.create(phaserCoords.x, phaserCoords.y, 'vDrifter')
+                //         // tempDrifter.scale.setTo(0.022, 0.022)
+                //         // tempDrifter.dataId = key
+                //     } else {
+                //         rDrifter.destroy()
+                //     }
+                // })
 
                 this.frameCount = 0
                 let stormXY = {
