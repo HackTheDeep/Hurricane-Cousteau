@@ -24,14 +24,12 @@ let septemberDrifters = convertedDrifterToHour.filter(row => {
 })
 
 let drifterObjects = septemberDrifters.map(singleDrifter => {
-  return Object.assign({}, {id: singleDrifter[0], month: singleDrifter[1], day: singleDrifter[2], hour:singleDrifter[3],year: singleDrifter[4], long: singleDrifter[5], lat: singleDrifter[6], qualIdx: singleDrifter[7]})
+  return Object.assign({}, {id: singleDrifter[0], month: singleDrifter[1], day: singleDrifter[2], hour:singleDrifter[3],year: singleDrifter[4], lat: singleDrifter[5], long: singleDrifter[6], qualIdx: singleDrifter[7]})
 })
 
 let groupedById = _.groupBy(drifterObjects, function(obj){
   return obj.id
 })
-
-
 
 Object.keys(groupedById).forEach(key => {
   groupedById[key] = _.groupBy(groupedById[key], (obj) => {
@@ -75,7 +73,6 @@ Object.keys(groupedById).forEach(id => {
 })
 
 router.get('/drifters', function (req, res, next) {
-  console.log('here!')
   res.json(groupedById)
 });
 
