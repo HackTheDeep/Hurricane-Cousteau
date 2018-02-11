@@ -7,6 +7,8 @@ let waterResistance = 0.90
 let maxEffectDist = 100
 const inputDelay = 15
 
+let drifterData = ['test']
+
 console.log(storm_stats)
 
 game.state.add('GameState', GameState)
