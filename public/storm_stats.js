@@ -1,4 +1,4 @@
-[
+var storm_stats = [
     [
         "Date",
         "Time",
@@ -1209,7 +1209,4 @@
         "Post-Tropical Cyclone",
         "-"
     ],
-    [
-        ""
-    ]
 ]
