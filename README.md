@@ -6,21 +6,21 @@ This work was produced as part of the Hack the Deep Hackathon at the American Mu
 
 As part of the Hackathon, we decided to work on the [Eye of Maria Challenge](https://github.com/amnh/HackTheDeep/wiki/The-Eye-of-Maria).
 
-Hurricanes are powerful forces of diruptions in the oceans, and Maria in particular caused a lot of damage on land. However its impact on the ocean has not been studied yet.
+Hurricanes are powerful forces of disruptions in the oceans, and Maria in particular caused a lot of damage on land. However, its impact on the ocean has not been studied yet.
 Using drifter and floater data from NOAA, how can we visualize the way the path of Hurricane Maria affected the oceans and its currents?
 
 ## The Solution
 
 ### Approach
 
-Using the data provided for the storm and the drifters, we aimed to first visulaize and then recreate through an alforithm the hurricane's physics through Phaser.js, a browser-optimized game engine. Phaser provided us with a platform that was easy to customize for our needs, but also with powerful logic built in that we could leverage. Imbedding the canvas into a webpage made it easy for us to then deploy our work online and allow anyone to access it.
+Using the data from the storm and the drifters, we aimed to first visulaize and then recreate through an algorithm the hurricane's physics through Phaser.js, a browser-optimized game engine. Phaser provided us with a platform that was easy to customize for our needs, but also with powerful logic built in that we could leverage. Embedding the canvas into a webpage made it easy for us to then deploy our work online and allow anyone to access it.
 
 ### Challenges
 
 As we worked on this project, we ran into several challenges.
 
 #### The Data
-The Data had to be turned into a format and structure that could be used by the game engine. To do this, we wrote several data parsing algorithms. We started with simple text files, and finished with arrays of data, organized by drifter id, and analyzed to remove or average duplicate data. This was difficult work but getting this part right allowed up to move very fast with the vizualization steps in Phaser.
+The Data had to be turned into a format and structure that could be used by the game engine. To do this, we wrote several data parsing algorithms. We started with simple text files, and finished with arrays of data, organized by drifter id, and analyzed to remove or average duplicate data. This was difficult work but getting this part right allowed us to move very fast with the vizualization steps in Phaser.
 
 #### Recreating Hurricane Physics
 
