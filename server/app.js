@@ -17,7 +17,7 @@ db.sync({force: false}).then(() => {
 
 app.use(express.static(resolve(__dirname, '..', 'public'))) // Serve static files from ../public
 app.use(express.static(resolve(__dirname, '..', 'node_modules')))
-// app.use('/api', require('./routes/api'));
+app.use('/api', require('./api'))
 
 //Other middlewear
 if (process.env.NODE_ENV !== 'production') {
@@ -83,24 +83,7 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500).send(err.message || 'Internal server error.');
 });
 
-function convertDecToHour(arr){
-  let newArr = arr.map(subArr => {
-    return subArr.slice(0,2).concat(subArr[2].split('.')).concat(subArr.slice(3))
-  })
-  let hourConverted = newArr.map(subArr => {
-    return subArr.slice(0,3).concat(Math.round((subArr[3] / 416), 2)).concat(subArr.slice(4))
-  })
-  let numerifiedArr = hourConverted.map(subArr => {
-    return subArr.map(el => {
-      return Number(el)
-    })
-  })
-  return numerifiedArr
-}
 
-const {drifter} = require('../public/drifter_data_converted.js')
-
-let convertedDrifterToHour = convertDecToHour(drifter)
 
 // function convertDateStorm(arr){
 //   let newArr = arr.map((subArr, idx) => {
@@ -132,58 +115,3 @@ let convertedDrifterToHour = convertDecToHour(drifter)
 // .catch(console.error)
 
 
-// const _ = require('lodash')
-
-let septemberDrifters = convertedDrifterToHour.filter(row => {
-  return row[1] === 9
-})
-
-let drifterObjects = septemberDrifters.map(singleDrifter => {
-  return Object.assign({}, {id: singleDrifter[0], month: singleDrifter[1], day: singleDrifter[2], hour:singleDrifter[3],year: singleDrifter[4], long: singleDrifter[5], lat: singleDrifter[6], qualIdx: singleDrifter[7]})
-})
-
-let groupedById = _.groupBy(drifterObjects, function(obj){
-  return obj.id
-})
-
-Object.keys(groupedById).forEach(key => {
-  groupedById[key] = _.groupBy(groupedById[key], (obj) => {
-    return obj.day
-  })
-})
-
-Object.keys(groupedById).forEach(id => {
-  Object.keys(groupedById[id]).forEach(day => {
-    groupedById[id][day] = _.groupBy(groupedById[id][day], (obj) => {
-      return obj.hour
-    })
-  })
-})
-
-Object.keys(groupedById).forEach(id => {
-  Object.keys(groupedById[id]).forEach(day => {
-    let hourOuter
-    let length
-    Object.keys(groupedById[id][day]).forEach(hour => {
-      length = groupedById[id][day][hour].length
-      hourOuter = hour
-      groupedById[id][day][hour] = groupedById[id][day][hour].reduce(function (output, obj) {
-        if (!output['long']) {
-          output['long'] = obj['long']
-        } else {
-          output['long'] += obj['long']
-        }
-        if (!output['lat']) {
-          output['lat'] = obj['lat']
-        } else {
-          output['lat'] += obj['lat']
-        }
-        return output;
-      }, {})
-    })
-    groupedById[id][day][hourOuter].long = groupedById[id][day][hourOuter].long/length
-    groupedById[id][day][hourOuter].lat = groupedById[id][day][hourOuter].lat/length
-  })
-})
-
-console.log('test', groupedById['116363'])
