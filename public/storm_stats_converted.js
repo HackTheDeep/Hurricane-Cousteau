@@ -1,6 +1,7 @@
 const storm_stats = [
   [
     "Date",
+    "Month",
     "Time",
     "Lat",
     "Lon",
