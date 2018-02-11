@@ -1,7 +1,5 @@
 const router = require('express').Router();
 const _ = require('lodash');
-
-
 const {drifter} = require('../../public/drifter_data_converted.js')
 
 function convertDecToHour(arr){
