@@ -6,6 +6,8 @@ let oceanCurrent = 10
 let waterResistance = 0.5
 const inputDelay = 15
 
+console.log(storm_stats)
+
 game.state.add('GameState', GameState)
 game.state.add('PreloadState', PreloadState)
 game.state.add('BootState', BootState)
