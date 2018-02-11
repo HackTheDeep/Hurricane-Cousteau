@@ -1,11 +1,16 @@
 var PreloadState = {
 
 	preload: function(){
-        this.load.image('hurricane', 'assets/hurricane_circle.png')
-        this.load.image('vDrifter', 'assets/orange_drifter.png')
+    this.load.image('hurricane', 'assets/hurricane_circle.png')
+    this.load.image('vDrifter', 'assets/orange_drifter.png')
 	},
 
 	create: function(){
-        this.state.start('GameState')
+		fetch('/api/drifters')
+		.then(result => result.json())
+		.then(data => {
+			drifterData = data
+			this.state.start('GameState')
+		})
   }
 }
