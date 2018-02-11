@@ -1,24 +1,79 @@
 const router = require('express').Router();
 module.exports = router;
 
-const Score = require('../db')
+const {drifter} = require('../../public/drifter_data_converted.js')
 
-router.get('/all', function (req, res, next) {
-  Score.findAll({})
-    .then(links => res.json(links))
-    .catch(next)
+function convertDecToHour(arr){
+  let newArr = arr.map(subArr => {
+    return subArr.slice(0,2).concat(subArr[2].split('.')).concat(subArr.slice(3))
+  })
+  let hourConverted = newArr.map(subArr => {
+    return subArr.slice(0,3).concat(Math.round((subArr[3] / 416), 2)).concat(subArr.slice(4))
+  })
+  let numerifiedArr = hourConverted.map(subArr => {
+    return subArr.map(el => {
+      return Number(el)
+    })
+  })
+  return numerifiedArr
+}
+
+let convertedDrifterToHour = convertDecToHour(drifter)
+
+let septemberDrifters = convertedDrifterToHour.filter(row => {
+  return row[1] === 9
+})
+
+let drifterObjects = septemberDrifters.map(singleDrifter => {
+  return Object.assign({}, {id: singleDrifter[0], month: singleDrifter[1], day: singleDrifter[2], hour:singleDrifter[3],year: singleDrifter[4], long: singleDrifter[5], lat: singleDrifter[6], qualIdx: singleDrifter[7]})
+})
+
+let groupedById = _.groupBy(drifterObjects, function(obj){
+  return obj.id
+})
+
+Object.keys(groupedById).forEach(key => {
+  groupedById[key] = _.groupBy(groupedById[key], (obj) => {
+    return obj.day
+  })
+})
+
+Object.keys(groupedById).forEach(id => {
+  Object.keys(groupedById[id]).forEach(day => {
+    groupedById[id][day] = _.groupBy(groupedById[id][day], (obj) => {
+      return obj.hour
+    })
+  })
+})
+
+Object.keys(groupedById).forEach(id => {
+  Object.keys(groupedById[id]).forEach(day => {
+    let hourOuter
+    let length
+    Object.keys(groupedById[id][day]).forEach(hour => {
+      length = groupedById[id][day][hour].length
+      hourOuter = hour
+      groupedById[id][day][hour] = groupedById[id][day][hour].reduce(function (output, obj) {
+        if (!output['long']) {
+          output['long'] = obj['long']
+        } else {
+          output['long'] += obj['long']
+        }
+        if (!output['lat']) {
+          output['lat'] = obj['lat']
+        } else {
+          output['lat'] += obj['lat']
+        }
+        return output;
+      }, {})
+    })
+    groupedById[id][day][hourOuter].long = groupedById[id][day][hourOuter].long/length
+    groupedById[id][day][hourOuter].lat = groupedById[id][day][hourOuter].lat/length
+  })
+})
+
+
+router.get('/drifters', function (req, res, next) {
+  res.json(groupedById)
 });
 
-router.post('/', function(req, res, next){
-	let scoreObj = {name: req.body.name, score: req.body.score}
-	if (process.env.SCORE_POST_KEY === req.body.key){
-		let newFunc = new Function ('number', 'score', process.env.KJBANKJABHKJSBH)
-		if (newFunc(req.body.number, req.body.score)){
-			Score.create(scoreObj)
-		  .then(response => res.send(response))
-		  .catch((error) => {
-		    res.json(error)
-		  })
-		}
-	}
-})
