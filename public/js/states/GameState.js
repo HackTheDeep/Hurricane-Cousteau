@@ -10,6 +10,7 @@ const GameState = {
         this.frameLength = 3
         this.distanceMultiplier = 23
         this.endtext = null
+        console.log(drifterData)
     },
 
     create: function() {
@@ -31,17 +32,32 @@ const GameState = {
         drifters.setAll('anchor.x', 0.5)
         drifters.setAll('anchor.y', 0.5)
 
-        let driftX = 0
-        let driftY = 0
-        let tempDrifter
+       let tempDrifter
 
-        for(let i = 1; i <= 124; i++){
-            tempDrifter = drifters.create(driftX, driftY, 'vDrifter')
-            tempDrifter.scale.setTo(0.02, 0.02)
-            driftX += 50
-            if (driftX > 800){
-                driftY += 100
-                driftX = 0
+        for (let key in drifterData){
+            console.log(key)
+            let tempId = drifterData[key]
+            let startDay = 16
+            let startTime = 15
+            while (!tempId[startDay] && startDay < 32){
+                startDay++
+            }
+            if (startDay !== 32){
+                while (!tempId[startDay][startTime]){
+                    startTime++
+                    if (startTime >= 24){
+                        startTime = 0
+                        startDay++
+                    }
+                }
+                console.log(key, tempId[startDay][startTime])
+                console.log(real)
+                let coords = tempId[startDay][startTime]
+                let phaserCoords = {x: (812.2 - coords.x), y}
+                // tempDrifter = drifters.create(coords.x, coords.y, 'vDrifter')
+                // tempDrifter.scale.setTo(0.02, 0.02)
+            } else {
+                console.log(key, 'no start data')
             }
         }
 
