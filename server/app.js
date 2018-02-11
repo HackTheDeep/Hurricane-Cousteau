@@ -48,13 +48,13 @@ const server = app.listen(port, function () {
 // if date & time is same, then avg lat, lon, wind, pressure
 for (var i=1; i<stormStats.length; i++) {
   let stormStatsObjs = stormStats.map(singleStat => {
-    return Object.assign({}, 
+    return Object.assign({},
       { day: singleStat[0],
         month: singleStat[1],
         time: singleStat[2],
         lat: singleStat[3],
         long: singleStat[4],
-        wind: singleStat[5], 
+        wind: singleStat[5],
         pressure: singleStat[6],
         stormType: singleStat[7],
         category: singleStat[8],
@@ -66,12 +66,11 @@ for (var i=1; i<stormStats.length; i++) {
     var dateTime = obj.month + ", " + obj.day + ", " + obj.time
     result[dateTime] = {
       dateTime: dateTime,
-      lat: (obj.lat + (result[dateTime] ? result[dateTime].lat : obj.lat))/2, 
+      lat: (obj.lat + (result[dateTime] ? result[dateTime].lat : obj.lat))/2,
       long: (obj.long + (result[dateTime] ? result[dateTime].long : obj.long))/2,
       wind: (obj.wind + (result[dateTime] ? result[dateTime].wind : obj.wind))/2,
       pressure: (obj.pressure + (result[dateTime] ? result[dateTime].pressure : obj.pressure))/2,
     };
-    console.log(result)
     return result;
   },{}));
 
@@ -84,20 +83,24 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500).send(err.message || 'Internal server error.');
 });
 
-// function convertDecToHour(arr){
-//   let newArr = arr.map(subArr => {
-//     return subArr.slice(0,2).concat(subArr[2].split('.')).concat(subArr.slice(3))
-//   })
-//   let hourConverted = newArr.map(subArr => {
-//     return subArr.slice(0,3).concat(Math.round((subArr[3] / 416), 2)).concat(subArr.slice(4))
-//   })
-//   let numerifiedArr = hourConverted.map(subArr => {
-//     return subArr.map(el => {
-//       return Number(el)
-//     })
-//   })
-//   return numerifiedArr
-// }
+function convertDecToHour(arr){
+  let newArr = arr.map(subArr => {
+    return subArr.slice(0,2).concat(subArr[2].split('.')).concat(subArr.slice(3))
+  })
+  let hourConverted = newArr.map(subArr => {
+    return subArr.slice(0,3).concat(Math.round((subArr[3] / 416), 2)).concat(subArr.slice(4))
+  })
+  let numerifiedArr = hourConverted.map(subArr => {
+    return subArr.map(el => {
+      return Number(el)
+    })
+  })
+  return numerifiedArr
+}
+
+const {drifter} = require('../public/drifter_data_converted.js')
+
+let convertedDrifterToHour = convertDecToHour(drifter)
 
 // function convertDateStorm(arr){
 //   let newArr = arr.map((subArr, idx) => {
@@ -128,10 +131,10 @@ app.use(function (err, req, res, next) {
 // .then(console.log('wrote file!'))
 // .catch(console.error)
 
-const {drifter} = require('./drifter_stats_converted.js')
-const _ = require('lodash')
 
-let septemberDrifters = drifter.filter(row => {
+// const _ = require('lodash')
+
+let septemberDrifters = convertedDrifterToHour.filter(row => {
   return row[1] === 9
 })
 
@@ -183,4 +186,4 @@ Object.keys(groupedById).forEach(id => {
   })
 })
 
-console.log('test', groupedById['116363']['29']['0'])
+console.log('test', groupedById['116363'])
