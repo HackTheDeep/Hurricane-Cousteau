@@ -40,9 +40,6 @@ const server = app.listen(port, function () {
   console.log('http://localhost:1910/');
 });
 
-const io = require('socket.io')(server);
-require('./socket-server')(io);
-
 //500 error middlewear
 app.use(function (err, req, res, next) {
   console.error(err);
