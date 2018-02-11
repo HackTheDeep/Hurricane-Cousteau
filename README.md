@@ -2,6 +2,8 @@
 
 This work was produced as part of the Hack the Deep Hackathon at the American Museum of Natural History, on February 9th to 11th 2018.
 
+Check out our [deployed work](hurricane-cousteau.herokuapp.com)
+
 ## The Problem
 
 As part of the Hackathon, we decided to work on the [Eye of Maria Challenge](https://github.com/amnh/HackTheDeep/wiki/The-Eye-of-Maria), a challenge presented to us by [David Lindo Atichati](http://www.lindolab.com/), a professor in the The City University of New York, Department of Engineering and Physics at CUNY College of Staten Island and Doctoral Program in Earth and Environmental Sciences at CUNY Graduate Center.
