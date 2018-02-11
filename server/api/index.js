@@ -1,5 +1,6 @@
 const router = require('express').Router();
-module.exports = router;
+const _ = require('lodash');
+
 
 const {drifter} = require('../../public/drifter_data_converted.js')
 
@@ -32,6 +33,8 @@ let groupedById = _.groupBy(drifterObjects, function(obj){
   return obj.id
 })
 
+
+
 Object.keys(groupedById).forEach(key => {
   groupedById[key] = _.groupBy(groupedById[key], (obj) => {
     return obj.day
@@ -51,29 +54,35 @@ Object.keys(groupedById).forEach(id => {
     let hourOuter
     let length
     Object.keys(groupedById[id][day]).forEach(hour => {
+      // console.log('test', groupedById[id][day][hour])
       length = groupedById[id][day][hour].length
       hourOuter = hour
       groupedById[id][day][hour] = groupedById[id][day][hour].reduce(function (output, obj) {
         if (!output['long']) {
           output['long'] = obj['long']
         } else {
-          output['long'] += obj['long']
+          output['long'] = (output['long'] + obj['long']) / 2
         }
         if (!output['lat']) {
           output['lat'] = obj['lat']
         } else {
-          output['lat'] += obj['lat']
+          output['lat'] = (output['lat'] + obj['lat']) / 2
         }
         return output;
       }, {})
     })
-    groupedById[id][day][hourOuter].long = groupedById[id][day][hourOuter].long/length
-    groupedById[id][day][hourOuter].lat = groupedById[id][day][hourOuter].lat/length
+    // groupedById[id][day][hourOuter].long = groupedById[id][day][hourOuter].long/length
+    // groupedById[id][day][hourOuter].lat = groupedById[id][day][hourOuter].lat/length
   })
 })
 
-
 router.get('/drifters', function (req, res, next) {
+  console.log('here!')
   res.json(groupedById)
 });
+
+module.exports = {
+  router,
+  groupedById
+}
 
