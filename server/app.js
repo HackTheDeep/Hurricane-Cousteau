@@ -3,6 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const db = require('./db');
+const fs = require('fs');
 
 db.sync({force: false}).then(() => {
 	console.log('Database is synced')
