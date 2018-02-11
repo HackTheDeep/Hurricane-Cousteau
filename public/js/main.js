@@ -1,9 +1,10 @@
 var game = new Phaser.Game(800, 600, Phaser.AUTO)
 
 //environment
-let windSpeed = 100
+let windMultiplier = 0.05
 let oceanCurrent = 10
-let waterResistance = 0.5
+let waterResistance = 0.90
+let maxEffectDist = 100
 const inputDelay = 15
 
 console.log(storm_stats)
