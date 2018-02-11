@@ -4,10 +4,10 @@ This work was produced as part of the Hack the Deep Hackathon at the American Mu
 
 ## The Problem
 
-As part of the Hackathon, we decided to work on the [Eye of Maria Challenge](https://github.com/amnh/HackTheDeep/wiki/The-Eye-of-Maria).
+As part of the Hackathon, we decided to work on the [Eye of Maria Challenge](https://github.com/amnh/HackTheDeep/wiki/The-Eye-of-Maria), a challenge presented to us by [David Lindo Atichati](http://www.lindolab.com/), a professor in the The City University of New York, Department of Engineering and Physics at CUNY College of Staten Island and Doctoral Program in Earth and Environmental Sciences at CUNY Graduate Center.
 
 Hurricanes are powerful forces of disruptions in the oceans, and Maria in particular caused a lot of damage on land. However, its impact on the ocean has not been studied yet.
-Using drifter and floater data from NOAA, how can we visualize the way the path of Hurricane Maria affected the oceans and its currents?
+Using drifter and floater data from NOAA and Professor Lindo Atichati, how can we visualize the way the path of Hurricane Maria affected the oceans and its currents?
 
 ## The Solution
 
