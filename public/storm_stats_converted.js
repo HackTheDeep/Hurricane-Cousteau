@@ -1,4 +1,4 @@
-[
+const storm_stats = [
   [
     "Date",
     "Month",

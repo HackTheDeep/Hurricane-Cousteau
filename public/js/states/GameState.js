@@ -42,7 +42,9 @@ const GameState = {
         drifters.setAll('anchor.x', 0.5)
         drifters.setAll('anchor.y', 0.5)
 
-        this.timeStamp = game.add.text(8, 8, storm_stats[this.globalTimer][0] + ' || ' + storm_stats[this.globalTimer][1] , {font: '24pt Arial', fill: 'black'})
+        testDrifter = drifters.create(400, 300)
+
+        this.timeStamp = game.add.text(8, 8, storm_stats[this.globalTimer][1] + ' ' + storm_stats[this.globalTimer][0] + ', ' + storm_stats[this.globalTimer][2] + ':00' , {font: '24pt Arial', fill: 'black'})
 
         //  Our controls.
         this.spaceBar = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR)
@@ -59,12 +61,10 @@ const GameState = {
             this.frameCount++
             if (this.frameCount >= this.frameLength){
                 this.frameCount = 0
-                let latString = storm_stats[this.globalTimer][2]
-                let longString = storm_stats[this.globalTimer][3]
-                hurricane.position.x = (800 + Number(storm_stats[1][2].slice(0, storm_stats[1][2].length - 1)) * this.distanceMultiplier) - (Number(latString.slice(0,latString.length - 1)) * this.distanceMultiplier)
-                hurricane.position.y = (600 - Number(storm_stats[1][3].slice(0, storm_stats[1][3].length - 1)) * this.distanceMultiplier) + (Number(longString.slice(0,longString.length - 1)) * this.distanceMultiplier)
+                hurricane.position.x = (800 + storm_stats[1][3] * this.distanceMultiplier) - (storm_stats[this.globalTimer][3] * this.distanceMultiplier)
+                hurricane.position.y = (600 - storm_stats[1][4] * this.distanceMultiplier) + (storm_stats[this.globalTimer][4] * this.distanceMultiplier)
                 this.timeStamp.destroy()
-                this.timeStamp = game.add.text(8, 8, storm_stats[this.globalTimer][0] + ' || ' + storm_stats[this.globalTimer][1] , {font: '24pt Arial', fill: 'black'})
+                this.timeStamp = game.add.text(8, 8, storm_stats[this.globalTimer][1] + ' ' + storm_stats[this.globalTimer][0] + ', ' + storm_stats[this.globalTimer][2] + ':00' , {font: '24pt Arial', fill: 'black'})
                 this.globalTimer++
             }
         } else if(!this.endtext) {
