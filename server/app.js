@@ -8,6 +8,7 @@ const Promise = require('bluebird')
 const write = Promise.promisify(fs.writeFile)
 const stormStats = require('../public/storm_stats_converted')
 const _ = require('lodash');
+const api = require('./api')
 
 db.sync({force: false}).then(() => {
 	console.log('Database is synced')
@@ -17,7 +18,7 @@ db.sync({force: false}).then(() => {
 
 app.use(express.static(resolve(__dirname, '..', 'public'))) // Serve static files from ../public
 app.use(express.static(resolve(__dirname, '..', 'node_modules')))
-app.use('/api', require('./api'))
+
 
 //Other middlewear
 if (process.env.NODE_ENV !== 'production') {
@@ -28,7 +29,7 @@ if (process.env.NODE_ENV !== 'production') {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use('/api', require('./api'));
+app.use('/api', api.router);
 
 app.get('/key', function (req, res, next) {
   res.json(process.env.SCORE_POST_KEY)
@@ -46,6 +47,8 @@ const server = app.listen(port, function () {
 
 // Collapse stormStats by date
 // if date & time is same, then avg lat, lon, wind, pressure
+let stormData
+
 for (var i=1; i<stormStats.length; i++) {
   let stormStatsObjs = stormStats.map(singleStat => {
     return Object.assign({},
@@ -62,7 +65,7 @@ for (var i=1; i<stormStats.length; i++) {
     )
   })
 // Source: https://stackoverflow.com/questions/36454604/lodash-aggregating-and-reducing-array-of-objects-based-on-date
-  _.values(_.reduce(stormStatsObjs,function(result,obj){
+ _.values(_.reduce(stormStatsObjs,function(result,obj){
     var dateTime = obj.month + ", " + obj.day + ", " + obj.time
     result[dateTime] = {
       dateTime: dateTime,
@@ -71,11 +74,14 @@ for (var i=1; i<stormStats.length; i++) {
       wind: (obj.wind + (result[dateTime] ? result[dateTime].wind : obj.wind))/2,
       pressure: (obj.pressure + (result[dateTime] ? result[dateTime].pressure : obj.pressure))/2,
     };
+    stormData = result
     return result;
-  },{}));
-
+  },{}))
 }
 
+const {groupedById} = require('./api/index')
+
+// let stormDataDayHours = Object.keys(stormData).split(', ')
 //500 error middlewear
 app.use(function (err, req, res, next) {
   console.error(err);
