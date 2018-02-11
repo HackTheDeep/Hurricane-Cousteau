@@ -61,7 +61,7 @@ for (var i=1; i<stormStats.length; i++) {
       }
     )
   })
-
+// Source: https://stackoverflow.com/questions/36454604/lodash-aggregating-and-reducing-array-of-objects-based-on-date
   _.values(_.reduce(stormStatsObjs,function(result,obj){
     var dateTime = obj.month + ", " + obj.day + ", " + obj.time
     result[dateTime] = {
@@ -71,7 +71,7 @@ for (var i=1; i<stormStats.length; i++) {
       wind: (obj.wind + (result[dateTime] ? result[dateTime].wind : 0))/2,
       pressure: (obj.pressure + (result[dateTime] ? result[dateTime].pressure : 0))/2,
     };
-    console.log(result)
+    // console.log(result)
     return result;
   },{}));
 
