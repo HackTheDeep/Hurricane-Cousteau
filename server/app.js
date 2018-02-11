@@ -92,3 +92,60 @@ app.use(function (err, req, res, next) {
 // write('./server/drifter_stats_converted.js', JSON.stringify(newDrifter, null, 4))
 // .then(console.log('wrote file!'))
 // .catch(console.error)
+
+const {drifter} = require('./drifter_stats_converted.js')
+const _ = require('lodash')
+
+let septemberDrifters = drifter.filter(row => {
+  return row[1] === 9
+})
+
+let drifterObjects = septemberDrifters.map(singleDrifter => {
+  return Object.assign({}, {id: singleDrifter[0], month: singleDrifter[1], day: singleDrifter[2], hour:singleDrifter[3],year: singleDrifter[4], long: singleDrifter[5], lat: singleDrifter[6], qualIdx: singleDrifter[7]})
+})
+
+let groupedById = _.groupBy(drifterObjects, function(obj){
+  return obj.id
+})
+
+Object.keys(groupedById).forEach(key => {
+  groupedById[key] = _.groupBy(groupedById[key], (obj) => {
+    return obj.day
+  })
+})
+
+Object.keys(groupedById).forEach(id => {
+  Object.keys(groupedById[id]).forEach(day => {
+    groupedById[id][day] = _.groupBy(groupedById[id][day], (obj) => {
+      return obj.hour
+    })
+  })
+})
+
+Object.keys(groupedById).forEach(id => {
+  Object.keys(groupedById[id]).forEach(day => {
+    let hourOuter
+    let length
+    Object.keys(groupedById[id][day]).forEach(hour => {
+      length = groupedById[id][day][hour].length
+      hourOuter = hour
+      groupedById[id][day][hour] = groupedById[id][day][hour].reduce(function (output, obj) {
+        if (!output['long']) {
+          output['long'] = obj['long']
+        } else {
+          output['long'] += obj['long']
+        }
+        if (!output['lat']) {
+          output['lat'] = obj['lat']
+        } else {
+          output['lat'] += obj['lat']
+        }
+        return output;
+      }, {})
+    })
+    groupedById[id][day][hourOuter].long = groupedById[id][day][hourOuter].long/length
+    groupedById[id][day][hourOuter].lat = groupedById[id][day][hourOuter].lat/length
+  })
+})
+
+console.log('test', groupedById['116363']['29']['0'])
