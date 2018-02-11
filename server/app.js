@@ -1,4 +1,4 @@
-const {resolve} = require('path')
+const {resolve} = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
@@ -6,6 +6,8 @@ const db = require('./db');
 const fs = require('fs');
 const Promise = require('bluebird')
 const write = Promise.promisify(fs.writeFile)
+const stormStats = require('../public/storm_stats_converted')
+const _ = require('lodash');
 
 db.sync({force: false}).then(() => {
 	console.log('Database is synced')
@@ -41,6 +43,39 @@ const server = app.listen(port, function () {
   console.log('Server is listening...');
   console.log('http://localhost:1910/');
 });
+
+// Collapse stormStats by date
+// if date & time is same, then avg lat, lon, wind, pressure
+for (var i=1; i<stormStats.length; i++) {
+  let stormStatsObjs = stormStats.map(singleStat => {
+    return Object.assign({}, 
+      { day: singleStat[0],
+        month: singleStat[1],
+        time: singleStat[2],
+        lat: singleStat[3],
+        long: singleStat[4],
+        wind: singleStat[5], 
+        pressure: singleStat[6],
+        stormType: singleStat[7],
+        category: singleStat[8],
+      }
+    )
+  })
+// Source: https://stackoverflow.com/questions/36454604/lodash-aggregating-and-reducing-array-of-objects-based-on-date
+  _.values(_.reduce(stormStatsObjs,function(result,obj){
+    var dateTime = obj.month + ", " + obj.day + ", " + obj.time
+    result[dateTime] = {
+      dateTime: dateTime,
+      lat: (obj.lat + (result[dateTime] ? result[dateTime].lat : 0))/2, 
+      long: (obj.long + (result[dateTime] ? result[dateTime].long : 0))/2,
+      wind: (obj.wind + (result[dateTime] ? result[dateTime].wind : 0))/2,
+      pressure: (obj.pressure + (result[dateTime] ? result[dateTime].pressure : 0))/2,
+    };
+    // console.log(result)
+    return result;
+  },{}));
+
+}
 
 //500 error middlewear
 app.use(function (err, req, res, next) {
