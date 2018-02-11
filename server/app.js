@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 const app = express();
 const db = require('./db');
 const fs = require('fs');
+const Promise = require('bluebird')
+const write = Promise.promisify(fs.writeFile)
 
 db.sync({force: false}).then(() => {
 	console.log('Database is synced')
@@ -46,3 +48,23 @@ app.use(function (err, req, res, next) {
   console.error(err.stack);
   res.status(err.status || 500).send(err.message || 'Internal server error.');
 });
+
+const {drifter} = require('../drifter_data.js')
+
+console.log('drifterpre!', drifter.slice(0,15))
+
+function convertDecToHour(arr){
+  let newArr = arr.map(subArr => {
+    return subArr.slice(0,2).concat(subArr[2].split('.')).concat(subArr.slice(3))
+  })
+  let hourConverted = newArr.map(subArr => {
+    return subArr.slice(0,3).concat(Math.round((subArr[3] / 416), 2)).concat(subArr.slice(4))
+  })
+  return hourConverted
+}
+
+let newDrifter = convertDecToHour(drifter)
+
+write('./server/drifterDataHour.js', JSON.stringify(newDrifter, null, 4))
+.then(console.log('wrote file!'))
+.catch(console.error)
