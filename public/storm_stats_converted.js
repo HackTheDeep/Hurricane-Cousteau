@@ -1330,3 +1330,5 @@ const storm_stats = [
         "-"
     ]
 ]
+
+module.exports = storm_stats;
