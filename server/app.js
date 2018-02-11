@@ -66,12 +66,12 @@ for (var i=1; i<stormStats.length; i++) {
     var dateTime = obj.month + ", " + obj.day + ", " + obj.time
     result[dateTime] = {
       dateTime: dateTime,
-      lat: (obj.lat + (result[dateTime] ? result[dateTime].lat : 0))/2, 
-      long: (obj.long + (result[dateTime] ? result[dateTime].long : 0))/2,
-      wind: (obj.wind + (result[dateTime] ? result[dateTime].wind : 0))/2,
-      pressure: (obj.pressure + (result[dateTime] ? result[dateTime].pressure : 0))/2,
+      lat: (obj.lat + (result[dateTime] ? result[dateTime].lat : obj.lat))/2, 
+      long: (obj.long + (result[dateTime] ? result[dateTime].long : obj.long))/2,
+      wind: (obj.wind + (result[dateTime] ? result[dateTime].wind : obj.wind))/2,
+      pressure: (obj.pressure + (result[dateTime] ? result[dateTime].pressure : obj.pressure))/2,
     };
-    // console.log(result)
+    console.log(result)
     return result;
   },{}));
 
