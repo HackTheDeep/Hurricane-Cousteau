@@ -49,22 +49,46 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500).send(err.message || 'Internal server error.');
 });
 
-const {drifter} = require('../drifter_data.js')
+// function convertDecToHour(arr){
+//   let newArr = arr.map(subArr => {
+//     return subArr.slice(0,2).concat(subArr[2].split('.')).concat(subArr.slice(3))
+//   })
+//   let hourConverted = newArr.map(subArr => {
+//     return subArr.slice(0,3).concat(Math.round((subArr[3] / 416), 2)).concat(subArr.slice(4))
+//   })
+//   let numerifiedArr = hourConverted.map(subArr => {
+//     return subArr.map(el => {
+//       return Number(el)
+//     })
+//   })
+//   return numerifiedArr
+// }
 
-console.log('drifterpre!', drifter.slice(0,15))
+// function convertDateStorm(arr){
+//   let newArr = arr.map((subArr, idx) => {
+//     if (idx < 10){
+//       console.log('loook', subArr[4].slice(0, -4))
+//     }
+//     return subArr[0].split('-').concat(subArr[1].slice(0, 2)).concat(subArr[2].slice(0,-1)).concat(subArr[3].slice(0,-1)).concat(subArr[4].slice(0, -4)).concat(subArr[5].slice(0, -3)).concat(subArr.slice(6))
+//   })
+//   let convertToNum = newArr.map(subArr => {
+//     return subArr.map((el, idx) => {
+//       if (idx !== 1 && idx !== 7){
+//         if (idx === 8 && el === '-'){
+//           return el
+//         }
+//         return Number(el)
+//       }
+//       return el
+//     })
+//   })
+//   return convertToNum
+// }
 
-function convertDecToHour(arr){
-  let newArr = arr.map(subArr => {
-    return subArr.slice(0,2).concat(subArr[2].split('.')).concat(subArr.slice(3))
-  })
-  let hourConverted = newArr.map(subArr => {
-    return subArr.slice(0,3).concat(Math.round((subArr[3] / 416), 2)).concat(subArr.slice(4))
-  })
-  return hourConverted
-}
+// write('./server/drifterDataHour.js', JSON.stringify(newDrifter, null, 4))
+// .then(console.log('wrote file!'))
+// .catch(console.error)
 
-let newDrifter = convertDecToHour(drifter)
-
-write('./server/drifterDataHour.js', JSON.stringify(newDrifter, null, 4))
-.then(console.log('wrote file!'))
-.catch(console.error)
+// write('./server/drifter_stats_converted.js', JSON.stringify(newDrifter, null, 4))
+// .then(console.log('wrote file!'))
+// .catch(console.error)
