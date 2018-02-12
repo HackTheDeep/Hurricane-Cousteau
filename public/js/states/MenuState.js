@@ -67,7 +67,7 @@ const MenuState = {
             if (selection === 'RUN'){
                 this.state.start('SetConditionsState')
             } else if (selection === 'ABOUT'){
-                this.state.start('AboutState')
+                window.location.href = "https://github.com/HackTheDeep/Hurricane-Cousteau";
             }
         }
     }
